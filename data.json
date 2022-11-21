@@ -1,9 +1,6 @@
 {
-    "name": "Cook Book",
-    "description": "Group project for a cook book",
-    "displayField": "title",
-    "fields": [
-      {
+  "fields" : [
+     {
         "id": "title",
         "name": "Title",
         "type": "Symbol",
@@ -82,82 +79,6 @@
         "validations": [],
         "disabled": false,
         "omitted": false
-      },
-      {
-        "id": "tags",
-        "name": "Tags",
-        "type": "Array",
-        "localized": false,
-        "required": true,
-        "validations": [],
-        "disabled": false,
-        "omitted": true,
-        "items": {
-          "type": "Symbol",
-          "validations": [
-            {
-              "in": [
-                "Beef",
-                "Chicken",
-                "Vegan",
-                "Lamb",
-                "LowCarb",
-                "Pig",
-                "Vegetarian",
-                "LowFat",
-                "SoulFood",
-                "BrainFood"
-              ],
-              "message": "Beef Vegan Chicken Lamb LowCarb LowFat HighFat SoulFood BrainFood"
-            }
-          ]
-        }
       }
-    ],
-    "sys": {
-      "space": {
-        "sys": {
-          "type": "Link",
-          "linkType": "Space",
-          "id": "yynsd0hlzs9n"
-        }
-      },
-      "id": "cookBook",
-      "type": "ContentType",
-      "createdAt": "2022-11-02T10:16:18.990Z",
-      "updatedAt": "2022-11-15T21:15:38.358Z",
-      "environment": {
-        "sys": {
-          "id": "master",
-          "type": "Link",
-          "linkType": "Environment"
-        }
-      },
-      "publishedVersion": 19,
-      "publishedAt": "2022-11-15T21:15:38.358Z",
-      "firstPublishedAt": "2022-11-02T10:16:19.245Z",
-      "createdBy": {
-        "sys": {
-          "type": "Link",
-          "linkType": "User",
-          "id": "26X5MAs5T127GpC2IpnZFn"
-        }
-      },
-      "updatedBy": {
-        "sys": {
-          "type": "Link",
-          "linkType": "User",
-          "id": "5foJVALu1omyOZ8FcjHzgA"
-        }
-      },
-      "publishedCounter": 10,
-      "version": 20,
-      "publishedBy": {
-        "sys": {
-          "type": "Link",
-          "linkType": "User",
-          "id": "5foJVALu1omyOZ8FcjHzgA"
-        }
-      }
-    }
+   ]
   }
