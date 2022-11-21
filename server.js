@@ -7,6 +7,11 @@ app.get('/', (req, res) => {
     res.send('Hello World')
 });
 
+// generates a uuid
+app.get('/uuid', (req, res) => {
+    res.send(uuid())
+});
+
 app.listen(PORT, () => {
     console.log('App listening on port http://localhost:3000 !');
 });
