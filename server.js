@@ -8,7 +8,8 @@ app.get('/', (req, res) => {
 });
 
 // generates a uuid
-app.get('/uuid', (req, res) => {
+app.post('/uuid', (req, res) => {
+    res.sendStatus(201)
     res.send(uuid())
 });
 
