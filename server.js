@@ -1,17 +1,16 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
-const { v4: uuid } = require("uuid");
 const path = require("path");
+// middle ware for form to recieve req.file
 const multer  = require('multer')
+const upload = multer({ dest: './public/data/uploads/' })
+//id Generator 
+const { v4: uuid } = require("uuid");
+// cloudinary stuff 
+const cloudinary = require("./cloudinary");
+
 const PORT = 3000;
-// const cloudinary = require("./cloudinary");
-const cloudinary = require('cloudinary').v2
-cloudinary.config({ 
-    cloud_name: 'dwwm12zrf', 
-    api_key: '744777837789432', 
-    api_secret: 'yTTsa_MxsuOp1m75OCZs-1VbdkY' 
-  });
 
   const uploadImage = async (imagePath) => {
 
@@ -38,7 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // The From with the post request to push inot our .json file same as the /content path
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/test.html"));
+  res.sendFile(path.join(__dirname, "/upload.html"));
 });
 
 //Basic displaying of json
@@ -48,13 +47,13 @@ app.get("/entries", (req, res) => {
 });
 
 // The From with the post request to push inot our .json file
-app.get("/content", (req, res) => {
-  res.sendFile(path.join(__dirname, "/test.html"));
+app.get("/upload", (req, res) => {
+  res.sendFile(path.join(__dirname, "/upload.html"));
 });
 
 // The Post request who reads and writes to data.json
-app.post("/content", (req, res) =>{
-  uploadImage("filepathplaceholder").then(url => {
+app.post("/upload",upload.single('mainImage'), (req, res) =>{
+  uploadImage(req.file.path).then(url => {
     const data = fs.readFileSync("./data/data.json");
     const myObject = JSON.parse(data);
     const { ...form } = req.body;
@@ -80,6 +79,3 @@ app.post("/content", (req, res) =>{
 app.listen(PORT, () => {
   console.log("App listening on port http://localhost:3000 !");
 });
-
-/////////////////////
-//Getting the Image//

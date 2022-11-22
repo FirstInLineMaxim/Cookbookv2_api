@@ -24,17 +24,17 @@
 </head>
 <body>
     <h1>Content Model</h1>
-    <form method="POST" action="/content" enctype="application/x-www-form-urlencoded">
+    <form method="POST" action="/upload" enctype="multipart/form-data">
     <label for="title">Title:</label>
-    <input type="text" name="title" placeholder="Title" maxlength="255"/>
+    <input type="text" name="title" placeholder="Title" maxlength="255" required/>
     <label for="description">Description:</label>
-    <input type="text" name="description" placeholder="Description" maxlength="255"/>
+    <input type="text" name="description" placeholder="Description" maxlength="255" required/>
     <label for="ingredients">Ingredients:</label>
-    <input type="text" name="ingredients" placeholder="Ingredients"/>
+    <input type="text" name="ingredients" placeholder="Ingredients" required/>
     <label for="instructions">How to make it</label>
-    <textarea name="instructions" placeholder="Instructions"></textarea>
+    <textarea name="instructions" placeholder="Instructions" required></textarea>
     <label  for="category">Category:</label>
-    <div class="category" name="category">
+    <!-- <div class="category" name="category">
         <label  for="Vegan">Vegan:</label>
         <input name="Vegan" type="radio" id="1"/>
         <label  for="Beef">Beef:</label>
@@ -43,9 +43,9 @@
         <input name="Chicken" type="radio" id="3"/>
         <label  for="Pig">Pig:</label>
         <input name="Pig" type="radio" id="4"/>
-    </div>
+    </div> -->
     <label for="mainImage">MainImage:</label>
-    <input type="file" name="mainImage" id="imageUpload" accept="image/*"/>
+    <input type="file" name="mainImage" id="imageUpload" accept="image/*" required/>
     <button type="submit">Submit here</button>
 </form>
 </body>
