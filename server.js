@@ -3,6 +3,9 @@ const app = express();
 const fs = require('fs');
 const path =require('path');
 const PORT = 3000
+/*const stream = fs.createWriteStream('test.json',{flags:'a'})
+stream.write(JSON.stringify(req.body)+',') */
+
 
 app.use(express.json());
 
@@ -11,7 +14,7 @@ app.use(express.json());
 });*/
 
 app.get('/', (req,res) => {
-fs.readFile('./data.json',(err,data) => {
+fs.readFile('./content.json',(err,data) => {
     if (err) throw err;
     let pcontent = JSON.parse(data);
     res.send(pcontent)})
@@ -25,6 +28,28 @@ fs.readFile('./data.json',(err,data) => {
     console.log(data);
     
     });*/
+
+app.put('/update', (req,res) => {
+let copy = require('./content.json');
+let up = req.body
+copy.push(up)
+copy = JSON.stringify(copy)
+fs.writeFile("content.json", copy, err => {
+if(err) {
+    return console.log(err)
+}
+res.send('Transfer sucessful')
+})
+
+
+})
+
+app.post('/post', (req,res) => {
+    let c = require('./content.json');
+res.send(c);
+
+
+})
 
 
 
