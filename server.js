@@ -3,33 +3,32 @@ const app = express();
 const fs = require("fs");
 const path = require("path");
 // middle ware for form to recieve req.file
-const multer  = require('multer')
-const upload = multer({ dest: './public/data/uploads/' })
-//id Generator 
+const multer = require("multer");
+const upload = multer({ dest: "./public/data/uploads/" });
+//id Generator
 const { v4: uuid } = require("uuid");
-// cloudinary stuff 
+// cloudinary stuff
 const cloudinary = require("./cloudinary");
 
 const PORT = 3000;
 
-  const uploadImage = async (imagePath) => {
+const uploadImage = async (imagePath) => {
+  // Use the uploaded file's name as the asset's public ID and
+  // allow overwriting the asset with new versions
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+  };
 
-    // Use the uploaded file's name as the asset's public ID and 
-    // allow overwriting the asset with new versions
-    const options = {
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-    };
-
-    try {
-      // Upload the image
-      const result = await cloudinary.uploader.upload(imagePath, options);
-      console.log(result);
-      return result.url;
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    // Upload the image
+    const result = await cloudinary.uploader.upload(imagePath, options);
+    console.log(result);
+    return result.url;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 //Parse for the request body
@@ -52,28 +51,37 @@ app.get("/upload", (req, res) => {
 });
 
 // The Post request who reads and writes to data.json
-app.post("/upload",upload.single('mainImage'), (req, res) =>{
-  uploadImage(req.file.path).then(url => {
-    const data = fs.readFileSync("./data/data.json");
-    const myObject = JSON.parse(data);
-    const { ...form } = req.body;
-    //Just the model for the json data
-    const newData = {
-      id: uuid(),
-      title: form.title,
-      description: form.description,
-      ingredients: form.ingredients,
-      instructions: form.instructions,
-      mainImage: url,
-    };
-    myObject.push(newData);
-    const newData2 = JSON.stringify(myObject);
-    fs.writeFile("./data/data.json", newData2, (err) => {
-      // Error checking
-      if (err) throw err;
-      console.log("New data added");
-    });
-  })
+app.post("/upload", upload.single("mainImage"), (req, res) => {
+  //uploadImage is a funktion from above
+  uploadImage(req.file.path)
+    .then((url) => {
+      const data = fs.readFileSync("./data/data.json");
+      const myObject = JSON.parse(data);
+      const { ...form } = req.body;
+      //Just the model for the json data
+      const newData = {
+        id: uuid(),
+        title: form.title,
+        description: form.description,
+        ingredients: form.ingredients,
+        instructions: form.instructions,
+        mainImage: url,
+      };
+      myObject.push(newData);
+      const newData2 = JSON.stringify(myObject);
+      fs.writeFile("./data/data.json", newData2, (err) => {
+        // Error checking
+        if (err) throw err;
+        console.log("New data added");
+      });
+    })
+    .then(() =>
+    //deletes the file afterwards
+      fs.unlink(req.file.path, (err) => {
+        if (err) throw err;
+        console.log(`file ${req.file.path} deleted`)
+      })
+    );
 });
 
 app.listen(PORT, () => {
