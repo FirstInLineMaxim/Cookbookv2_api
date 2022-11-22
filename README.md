@@ -8,4 +8,4 @@
 
 - [Express](https://expressjs.com/) - The Server
 - [uuid](https://github.com/uuidjs/uuid#readme) - Generator for ID's
-- [Placeholder](Placeholder) - For Future markdown
+- [Cloudinary](Placeholder) - For Future markdown
