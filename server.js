@@ -71,10 +71,10 @@ app.post("/upload", upload.single("mainImage"), (req, res) => {
   uploadImage(req.file.path)
     .then((url) => {
       const { title, description, ingredients, instructions } = req.body;
-      //querry for puting data into the recepies table also it closes the connection afterwards
+      //querry for puting data into the recepies table
       pool.query(
         `INSERT INTO recepies (title,description,ingredients,instructions,img_url) VALUES ('${title}','${description}','${ingredients}','${instructions}','${url}')`,
-        (err, res) => {
+        (err) => {
           if (err) throw err;
         }
       );
