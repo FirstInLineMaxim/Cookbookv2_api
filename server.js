@@ -67,12 +67,6 @@ app.get("/upload", (req, res) => {
 
 // The Post request who writes to sql database
 app.post("/upload", upload.single("mainImage"), (req, res) => {
-  // Connect sql server from sqlconfig.js
-  pool
-    .connect()
-    .then(() => console.log("connected"))
-    .catch((err) => console.error("connection error", err.stack));
-
   //uploadImage is a funktion from above
   uploadImage(req.file.path)
     .then((url) => {
@@ -82,8 +76,6 @@ app.post("/upload", upload.single("mainImage"), (req, res) => {
         `INSERT INTO recepies (title,description,ingredients,instructions,img_url) VALUES ('${title}','${description}','${ingredients}','${instructions}','${url}')`,
         (err, res) => {
           if (err) throw err;
-          console.log(res.rows);
-          pool.end(() => console.log("disconnected"));
         }
       );
     })
@@ -103,7 +95,7 @@ app.get("/recepies", (req, res) => {
   pool.query("SELECT * FROM recepies", (err, res2) => {
     if (err) throw err;
     res.send(res2.rows);
-    console.log("datasend")
+    console.log("pool sended database")
   });
 });
 
