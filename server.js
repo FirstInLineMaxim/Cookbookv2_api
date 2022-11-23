@@ -9,6 +9,9 @@ const upload = multer({ dest: "./public/data/uploads/" });
 const { v4: uuid } = require("uuid");
 // cloudinary stuff
 const cloudinary = require("./cloudinary");
+//sql config
+const client = require("./sqlconfig");
+const { disconnect } = require("process");
 
 const PORT = 3000;
 
@@ -50,38 +53,50 @@ app.get("/upload", (req, res) => {
   res.sendFile(path.join(__dirname, "/upload.html"));
 });
 
-// The Post request who reads and writes to data.json
+// The Post request who writes to sql database
 app.post("/upload", upload.single("mainImage"), (req, res) => {
+  // Connect sql server from sqlconfig.js
+  client
+    .connect()
+    .then(() => console.log("connected"))
+    .catch((err) => console.error("connection error", err.stack));
+
   //uploadImage is a funktion from above
   uploadImage(req.file.path)
     .then((url) => {
-      const data = fs.readFileSync("./data/data.json");
-      const myObject = JSON.parse(data);
-      const { ...form } = req.body;
-      //Just the model for the json data
-      const newData = {
-        id: uuid(),
-        title: form.title,
-        description: form.description,
-        ingredients: form.ingredients,
-        instructions: form.instructions,
-        mainImage: url,
-      };
-      myObject.push(newData);
-      const newData2 = JSON.stringify(myObject);
-      fs.writeFile("./data/data.json", newData2, (err) => {
-        // Error checking
-        if (err) throw err;
-        console.log("New data added");
-      });
+      const { title, description, ingredients, instructions } = req.body;
+      //querry for puting data into the recepies table also it closes the connection afterwards
+      client.query(
+        `INSERT INTO recepies (title,description,ingredients,instructions,img_url) VALUES ('${title}','${description}','${ingredients}','${instructions}','${url}')`,
+        (err, res) => {
+          if (err) throw err;
+          console.log(res.rows);
+          client.end(() => console.log("disconnected"));
+        }
+      );
     })
     .then(() =>
-    //deletes the file afterwards
+      //deletes the file which gets created for the image upload afterwards
       fs.unlink(req.file.path, (err) => {
         if (err) throw err;
-        console.log(`file ${req.file.path} deleted`)
+        console.log(`file ${req.file.path} deleted`);
       })
     );
+});
+
+app.get("/recepies", (req, res) => {
+  //connecting to sql server
+  client
+    .connect()
+    .then(() => console.log("connected"))
+    .catch((err) => console.error("connection error", err.stack));
+    //getting the data 
+  client.query("SELECT * FROM recepies", (err, res2) => {
+    if (err) throw err;
+    res.send(res2.rows);
+    console.log("datasend")
+    client.end(() => console.log("disconnected"));
+  });
 });
 
 app.listen(PORT, () => {
