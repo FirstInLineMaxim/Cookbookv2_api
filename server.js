@@ -5,8 +5,6 @@ const path = require("path");
 // middle ware for form to recieve req.file
 const multer = require("multer");
 const upload = multer({ dest: "./public/data/uploads/" });
-//id Generator
-const { v4: uuid } = require("uuid");
 // cloudinary stuff
 const cloudinary = require("./cloudinary");
 //sql config
@@ -85,13 +83,12 @@ app.post("/upload", upload.single("mainImage"), (req, res) => {
         if (err) throw err;
         console.log(`file ${req.file.path} deleted`);
       })
-    );
+    ).then(res.status(201)).then(res.send(`uploaded`))
 });
 
 //GET Request with all our data use example http://localhost:3000/recepies to fetch
 app.get("/recepies", (req, res) => {
-  //connecting to sql server
-
+    
   pool.query("SELECT * FROM recepies", (err, res2) => {
     if (err) throw err;
     res.send(res2.rows);
