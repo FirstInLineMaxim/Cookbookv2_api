@@ -3,8 +3,8 @@ const multer = require("multer");
 const upload = multer({ dest: "../public/data/uploads/" });
 const path = require("path");
 const uploadRouter = express.Router();
-const cloudinary = require("../cloudinary");
-const pool = require("../sqlconfig");
+const cloudinary = require("../configs/cloudinary");
+const pool = require("../configs/sqlconfig");
 const fs = require("fs");
 
 const uploadImage = async (imagePath) => {

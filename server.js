@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const uploadRouter = require("./Routes/uploadRouter");
 //sql config
-const pool = require("./sqlconfig");
+const pool = require("./configs/sqlconfig");
 const PORT = 3000;
 
 //Parse for the request body
