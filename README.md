@@ -8,4 +8,5 @@
 
 - [Express](https://expressjs.com/) - The Server
 - [uuid](https://github.com/uuidjs/uuid#readme) - Generator for ID's
-- [Placeholder](Placeholder) - For Future markdown
+- [Cloudinary](https://cloudinary.com/) - API for hosting Images
+- [PostgreSQL](https://www.postgresql.org/) - Database for the Content
