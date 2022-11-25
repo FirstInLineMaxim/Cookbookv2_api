@@ -12,7 +12,7 @@ const pool = new Pool({
 
 app.get("/", (req, res) => {
   pool // We're using the instance connected to the DB
-    .query('SELECT * FROM recipe;')
+    .query('SELECT * FROM Recipes;')
     .then(data => res.json(data.rows)) // We can send the data as a JSON
     .catch(e => console.log(e)); // In case of problem we send an HTTP code
 });
