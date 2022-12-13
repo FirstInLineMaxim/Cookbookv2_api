@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const cors = require('cors')
 const app = express();
@@ -5,7 +6,7 @@ const path = require("path");
 const uploadRouter = require("./Routes/uploadRouter");
 //sql config
 const pool = require("./configs/sqlconfig");
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 //Parse for the request body
 app.use(cors());
@@ -34,5 +35,5 @@ app.get("/recepies", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("App listening on port http://localhost:3000 !");
+  console.log("App listening on port http://localhost:",PORT);
 });
